@@ -48,10 +48,9 @@ def most_busy_users(selected_user, df):
 
 
 def create_word_cloud(df: pd.DataFrame):
-    stop_words_path = os.path.join(os.path.dirname(__file__), "stop_hinglish.txt")
-    with open(stop_words_path, 'r') as f:
-    stop_words = set(f.read().splitlines())
-
+    with open('stop_hinglish.txt', 'r') as f:
+        stop_words = set(f.read().splitlines())
+        
     df = df[df['user']!= 'null']
     df = df[df['user']!= 'Null']
     df = df[~df['message'].str.contains('<Media omitted>', na=False)]
