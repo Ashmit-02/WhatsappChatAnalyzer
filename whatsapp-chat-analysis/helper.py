@@ -48,9 +48,7 @@ def most_busy_users(selected_user, df):
 
 
 def create_word_cloud(df: pd.DataFrame):
-    with open('stop_hinglish.txt', 'r') as f:
-        stop_words = set(f.read().splitlines())
-        
+   
     df = df[df['user']!= 'null']
     df = df[df['user']!= 'Null']
     df = df[~df['message'].str.contains('<Media omitted>', na=False)]
@@ -58,10 +56,7 @@ def create_word_cloud(df: pd.DataFrame):
 
     def remove_emojis(text):
         return emoji.replace_emoji(text, replace='')
-    def remove_stop_words(message):
-        return ' '.join(word for word in message.split() if word.lower() not in stop_words)
 
-    df['message'] = df['message'].apply(remove_stop_words)
     df['message'] = df['message'].apply(remove_emojis)
 
     all_words = ' '.join(df['message'].astype(str)).split()
@@ -84,9 +79,6 @@ def create_word_cloud(df: pd.DataFrame):
 
 def most_common_words(selected_user, df):
 
-    f = open('stop_hinglish.txt', 'r')
-    stop_words = f.read()
-
     if selected_user != 'Everyone':
         df = df[df['user'] == selected_user]
 
@@ -97,8 +89,7 @@ def most_common_words(selected_user, df):
 
     for message in temp['message']:
         for word in message.lower().split():
-            if word not in stop_words:
-                words.append(word)
+            words.append(word)
 
     most_common_df = pd.DataFrame(Counter(words).most_common(20))
     return most_common_df
